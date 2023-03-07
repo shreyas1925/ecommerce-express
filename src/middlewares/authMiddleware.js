@@ -44,8 +44,6 @@ const authAdmin = async (req, res, next) => {
     },
   });
 
-  console.log("laka", user);
-
   if (user && user.dataValues.isAdmin) {
     next();
   } else {
