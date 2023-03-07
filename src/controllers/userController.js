@@ -1,6 +1,14 @@
+const { userSchema } = require('../schemas/user.schema');
 const userServices = require('../services/userServices');
 const register = async (req,res) => {
     try{
+        const {error,value} = userSchema.validate(req.body,{abortEarly : false})
+        if(error)
+        {
+            throw new Error(error.message)
+        }
+
+        // console.log("value",value); 
         const {name,password,isAdmin} = req.body;
         const user = await userServices.register(name,password,isAdmin);
         res.status(200).json(user)
@@ -12,6 +20,12 @@ const register = async (req,res) => {
 
 const login = async (req,res) => {
     try{
+        const {error,value} = userSchema.validate(req.body,{abortEarly : false})
+        if(error)
+        {
+            throw new Error(error.message)
+        }
+        
         const {name,password} = req.body;
         const user = await userServices.login(name,password);
         res.status(200).json(user)

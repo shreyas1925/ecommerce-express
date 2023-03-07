@@ -8,7 +8,7 @@ const port = 5000;
 
 app.use(express.json());
 
-console.log(process.env.JWT_SECRET);
+// console.log(process.env.JWT_SECRET);
 
 app.use("/api", userRoute);
 app.use("/api", productsRoute);

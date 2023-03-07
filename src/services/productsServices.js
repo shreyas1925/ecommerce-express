@@ -1,10 +1,10 @@
 const db = require("../.././database/models");
-const addProduct = async (name, price, description, userId) => {
+
+const addProduct = async (name, price, description) => {
   const product = await db.Products.create({
     name,
     price,
     description,
-    userId,
   });
   return product;
 };
