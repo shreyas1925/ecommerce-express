@@ -1,5 +1,5 @@
 const { createClient } = require("redis");
-const insertIntoRedis = async (token) => {
+const insertIntoRedis = async (token,userId) => {
   const client = createClient();
 
   client.on("error", function (error) {
@@ -8,11 +8,11 @@ const insertIntoRedis = async (token) => {
 
   
   await client.connect();
-  await client.set("token", token);
+  await client.set(token,userId);
   await client.disconnect();
 };
 
-const getFromRedis = async () => {
+const getFromRedis = async (token) => {
   const client = createClient();
 
   client.on("error", function (error) {
@@ -20,9 +20,9 @@ const getFromRedis = async () => {
   });
 
   await client.connect();
-  const token = await client.get("token");
+  const userId = await client.get(token);
   await client.disconnect();
-  return token;
+  return userId;
 };
 
 module.exports = { insertIntoRedis, getFromRedis };

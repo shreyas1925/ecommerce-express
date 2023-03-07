@@ -9,4 +9,9 @@ const addProduct = async (name, price, description, userId) => {
   return product;
 };
 
-module.exports = { addProduct };
+const getProducts = async () => {
+  const products = await db.Products.findAll();
+  return products;
+};
+
+module.exports = { addProduct, getProducts };

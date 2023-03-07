@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({Users}) {
 
-      Products.belongsTo(Users, {foreignKey: 'userId',onDelete: 'cascade'})
+      // Products.belongsTo(Users, {foreignKey: 'userId',onDelete: 'cascade'})
 
     }
   }
@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     price: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Products',

@@ -11,4 +11,15 @@ const addProduct = async(req, res) => {
     }
 }
 
-module.exports = {addProduct}
+const getProducts = async(req, res) => {
+    try{
+        const products = await productServices.getProducts()
+        res.status(200).json(products)
+    }
+    catch(error)
+    {
+        res.status(400).json({message : error.message})
+    }
+}
+
+module.exports = {addProduct,getProducts}

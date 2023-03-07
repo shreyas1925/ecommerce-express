@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { getFromRedis } = require("../utils/redis");
+const db = require("../.././database/models");
 
 const authUser = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -8,13 +9,21 @@ const authUser = (req, res, next) => {
 
   if (token) {
     jwt.verify(token, "secret", async (error, user) => {
+      console.log("user", user);
       if (error) {
         res.status(403).json("Forbidden");
       } else {
-        const tokenFromRedis = await getFromRedis();
+        const userId = await getFromRedis(token);
 
-        if (token === tokenFromRedis) {
-          req.user = user;
+        if (userId) {
+          //   // req.user = user;
+          //   const getuser = await db.Users.findOne({
+          //     where: {
+          //       name: user,
+          //     },
+          //   });
+          //   req.user = getuser;
+          req.userId = userId;
           next();
         } else {
           res.status(401).json("Unauthorized");
@@ -26,4 +35,24 @@ const authUser = (req, res, next) => {
   }
 };
 
-module.exports = { authUser };
+const authAdmin = async (req, res, next) => {
+  const userId = req.userId;
+
+  const user = await db.Users.findOne({
+    where: {
+      id: userId,
+    },
+  });
+
+  console.log("laka", user);
+
+  if (user && user.dataValues.isAdmin) {
+    next();
+  } else {
+    res
+      .status(403)
+      .json("Sorry you dont have access to this route!! Please login as admin");
+  }
+};
+
+module.exports = { authUser, authAdmin };

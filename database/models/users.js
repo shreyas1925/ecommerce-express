@@ -11,14 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({Products}) {
 
-      Users.hasMany(Products, {foreignKey: 'userId'})
-      
+      // Users.hasMany(Products, {foreignKey: 'userId'})
+
     }
   }
   Users.init({
     name: DataTypes.STRING,
     password: DataTypes.STRING,
-    isAdmin: DataTypes.BOOLEAN
+    isAdmin: DataTypes.BOOLEAN,
+    cart: DataTypes.ARRAY(DataTypes.INTEGER)
   }, {
     sequelize,
     modelName: 'Users',

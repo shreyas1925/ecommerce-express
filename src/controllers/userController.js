@@ -1,8 +1,8 @@
 const userServices = require('../services/userServices');
 const register = async (req,res) => {
     try{
-        const {name,password} = req.body;
-        const user = await userServices.register(name,password);
+        const {name,password,isAdmin} = req.body;
+        const user = await userServices.register(name,password,isAdmin);
         res.status(200).json(user)
     }catch(error)
     {

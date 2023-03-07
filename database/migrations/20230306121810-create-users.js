@@ -18,6 +18,10 @@ module.exports = {
       isAdmin: {
         type: Sequelize.BOOLEAN
       },
+      cart:{
+        type:Sequelize.ARRAY(Sequelize.INTEGER),
+        defaultValue: []
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
