@@ -8,8 +8,7 @@ const addProduct = async(req, res) => {
         {
             throw new Error(error.message)
         }
-        const {name, price, description} = req.body;
-        const product = await productServices.addProduct(name, price, description)
+        const product = await productServices.addProduct(req.body)
         res.status(200).json(product)   
     }
     catch(error)

@@ -3,29 +3,34 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { insertIntoRedis } = require("../utils/redis");
 
-const register = async (name, password, isAdmin) => {
-  const hashedPassword = await bcrypt.hash(password, 10);
+const register = async (userDetails) => {
+  // console.log(userDetails.password);
+  
+  if(!userDetails.password){
+    throw new Error("Password is required");
+  }
+  const hashedPassword = await bcrypt.hash(userDetails.password, 10);
 
-  isAdmin = isAdmin ? true : false;
+  userDetails.isAdmin = userDetails.isAdmin ? true : false;
 
   const user = await db.Users.create({
-    name,
+    name:userDetails.name,
     password: hashedPassword,
-    isAdmin,
+    isAdmin:userDetails.isAdmin,
   });
   return user;
 };
 
-const login = async (name, password) => {
+const login = async (userDetails) => {
   const user = await db.Users.findOne({
     where: {
-      name,
+      name:userDetails.name,
     },
   });
   if (!user) {
     throw new Error("User not found");
   }
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+  const isPasswordValid = await bcrypt.compare(userDetails.password, user.password);
   if (!isPasswordValid) {
     throw new Error("Password is not valid");
   }
