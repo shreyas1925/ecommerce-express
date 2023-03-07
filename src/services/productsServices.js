@@ -14,4 +14,33 @@ const getProducts = async () => {
   return products;
 };
 
-module.exports = { addProduct, getProducts };
+const addProductToCart = async (productId, userId) => {
+  const product = await db.Products.findOne({
+    where: {
+      id: productId,
+    },
+  });
+
+  const user = await db.Users.findOne({
+    where: {
+      id: userId,
+    },
+  });
+
+ await db.Users.update(
+    {
+      cart: [...user.cart, product.id],
+    },
+    {
+      where: {
+        id: userId,
+      },
+    }
+  );
+
+  await user.save();
+
+  return user;
+};
+
+module.exports = { addProduct, getProducts, addProductToCart };

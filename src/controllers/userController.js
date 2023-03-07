@@ -21,8 +21,20 @@ const login = async (req,res) => {
     }
 }
 
+const getCartProducts = async (req,res) => {
+    try{
+        const userId = req.userId;
+        const products = await userServices.getCartProducts(userId);
+        res.status(200).json(products)
+        console.log("aaaa",products)
+    }catch(error)
+    {
+        res.status(400).json({message : error.message})
+    }
+}
+
 const validate = async (req,res) => {
     res.status(200).json({message : "Validated"})
 }
 
-module.exports = {register,login,validate}
+module.exports = {register,login,getCartProducts,validate}
