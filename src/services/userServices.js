@@ -5,10 +5,12 @@ const { insertIntoRedis } = require("../utils/redis");
 
 const register = async (userDetails) => {
   // console.log(userDetails.password);
-  
+
+  console.log("userDetails",userDetails.password);
   if(!userDetails.password){
     throw new Error("Password is required");
   }
+  
   const hashedPassword = await bcrypt.hash(userDetails.password, 10);
 
   userDetails.isAdmin = userDetails.isAdmin ? true : false;
@@ -31,12 +33,16 @@ const login = async (userDetails) => {
     throw new Error("User not found");
   }
   const isPasswordValid = await bcrypt.compare(userDetails.password, user.password);
+  
+  console.log("isPasswordValid",isPasswordValid)
+  
   if (!isPasswordValid) {
     throw new Error("Password is not valid");
   }
-  const token = jwt.sign(name, "secret");
-
-  console.log(user);
+  
+  const token = jwt.sign(userDetails.name, "secret");
+  
+  // console.log(user);
   await insertIntoRedis(token, user.dataValues.id);
 
   return token;
